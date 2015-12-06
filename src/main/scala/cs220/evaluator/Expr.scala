@@ -2,7 +2,7 @@ package cs220.evaluator
 
 sealed abstract class Expr
 
-/*
+  /*
   TODO: Part 1: Implement expression types.
   This part of the assignment requires you to implement the expression
   types for each of the expressions that our evaluator will support.
@@ -17,3 +17,32 @@ sealed abstract class Expr
   - Assign    : the assignment expression (v = expression)
   - Program   : the program expression (list of expression)
 */
+
+case class Var(name: String) extends Expr {
+  override def toString(): String = name
+}
+case class Number(value: Int) extends Expr {
+  override def toString(): String = value.toString
+}
+case class Add(left: Expr, right: Expr) extends Expr {
+  override def toString(): String = left.toString + " + " + right.toString
+}
+case class Sub(left: Expr, right: Expr) extends Expr {
+  override def toString(): String = left.toString + " - " + right.toString
+}
+case class Mul(left: Expr, right: Expr) extends Expr {
+  override def toString(): String = left.toString + " * " + right.toString
+}
+case class Div(left: Expr, right: Expr) extends Expr {
+  override def toString(): String = left.toString + " / " + right.toString
+}
+case class Assign(left: Var, right: Expr) extends Expr {
+  override def toString(): String = left.toString + " = " + right.toString
+}
+case class Program(exprs: List[Expr]) extends Expr {
+  override def toString(): String = exprs match {
+    case Nil => ""
+    case h :: Nil => h.toString
+    case h :: t => h.toString + "\n" + Program(t)
+  }
+}
